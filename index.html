@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Feedback</title>
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .feedback-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            width: 400px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .stars span {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.3s;
+        }
+
+        .stars span:hover,
+        .stars span.active {
+            color: gold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            resize: none;
+        }
+
+        .submit-button {
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-popup">
+        <h1>Customer Feedback</h1>
+        <form id="feedbackForm">
+            <label for="rating">How would you rank your experience with Daksha?</label>
+            <div class="stars">
+                <span onclick="selectRating(1)">&#9733;</span>
+                <span onclick="selectRating(2)">&#9733;</span>
+                <span onclick="selectRating(3)">&#9733;</span>
+                <span onclick="selectRating(4)">&#9733;</span>
+                <span onclick="selectRating(5)">&#9733;</span>
+            </div>
+
+            <label for="suggestions">How would you suggest Daksha to improve?</label>
+            <textarea id="suggestions" name="suggestions" maxlength="500"></textarea>
+
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to handle star rating selection
+        function selectRating(rating) {
+            const stars = document.querySelectorAll('.stars span');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Function to submit feedback form
+        function submitFeedback(event) {
+            event.preventDefault();
+
+            // Get values from the form
+            const rating = document.querySelectorAll('.stars span.active').length;
+            const suggestions = document.getElementById('suggestions').value;
+
+            // Construct the feedback object
+            const feedback = {
+                rating: rating,
+                suggestions: suggestions
+            };
+
+            // Send feedback to the server (in this case, via email)
+            const email = 'enterprisescreative72@gmail.com';
+            const subject = 'Customer Feedback';
+            const body = JSON.stringify(feedback, null, 2);
+            const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+        }
+
+        // Attach submit event listener to the form
+        const feedbackForm = document.getElementById('feedbackForm');
+        feedbackForm.addEventListener('submit', submitFeedback);
+    </script>
+</body>
+</html>
